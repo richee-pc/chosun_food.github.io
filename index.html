@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>조선대학교부속고등학교 급식 메뉴</title>
+<style>
+body {
+font-family: 'Noto Sans KR', sans-serif;
+margin: 0;
+padding: 20px;
+background-color: #2962ff;  /* 진한 파란색 배경 */
+background-image: linear-gradient(45deg, #2962ff 0%, #448aff 100%);
+min-height: 100vh;
+}
+
+.container {
+max-width: 800px;
+margin: 0 auto;
+background-color: rgba(255, 255, 255, 0.95);
+border-radius: 15px;
+padding: 25px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+color: #1565c0;  /* 진한 파란색 */
+text-align: center;
+margin-bottom: 30px;
+font-size: 28px;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.school-info {
+text-align: center;
+margin-bottom: 30px;
+padding: 15px;
+background-color: #bbdefb;  /* 연한 파란색 */
+border-radius: 10px;
+transition: transform 0.3s;
+}
+
+.school-info:hover {
+transform: translateY(-5px);
+}
+
+.school-info a {
+color: #1565c0;
+text-decoration: none;
+font-weight: bold;
+}
+
+.school-info a:hover {
+text-decoration: underline;
+}
+
+.menu-container {
+background-color: white;
+padding: 20px;
+border-radius: 12px;
+margin-top: 20px;
+border: 3px solid #2196f3;
+transition: transform 0.3s;
+}
+
+.menu-container:hover {
+transform: scale(1.01);
+}
+
+.date-selector {
+text-align: center;
+margin-bottom: 20px;
+}
+
+input[type="date"] {
+padding: 12px;
+border: 2px solid #2196f3;
+border-radius: 8px;
+font-size: 16px;
+background-color: white;
+color: #1565c0;
+cursor: pointer;
+}
+
+button {
+background-color: #2196f3;
+color: white;
+border: none;
+padding: 12px 25px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 16px;
+font-weight: bold;
+transition: all 0.3s;
+margin-left: 10px;
+}
+
+button:hover {
+background-color: #1565c0;
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+}
+
+.menu-items {
+margin-top: 20px;
+padding: 15px;
+background-color: #e3f2fd;
+border-radius: 10px;
+}
+
+.menu-table {
+width: 100%;
+border-collapse: collapse;
+background: white;
+border-radius: 12px;
+overflow: hidden;
+box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+}
+
+.menu-table thead th {
+background: linear-gradient(135deg, #2196f3, #1976d2);
+color: white;
+padding: 15px;
+font-size: 1.1em;
+font-weight: bold;
+text-align: center;
+}
+
+.menu-table th, 
+.menu-table td {
+padding: 12px 15px;
+text-align: left;
+border: 1px solid #e3f2fd;
+}
+
+.menu-table tr:nth-child(even) {
+background-color: #f8fbfe;
+}
+
+.menu-table tr:hover {
+background-color: #e3f2fd;
+transition: background-color 0.3s ease;
+}
+
+.menu-type {
+width: 80px;
+background-color: #bbdefb;
+color: #1565c0;
+font-weight: bold;
+text-align: center !important;
+}
+
+.menu-date {
+width: 100px;
+background-color: #e3f2fd;
+color: #1565c0;
+font-weight: bold;
+text-align: center !important;
+}
+
+.menu-content {
+line-height: 1.6;
+padding: 15px !important;
+}
+
+.menu-content span {
+display: inline-block;
+margin: 3px 8px;
+position: relative;
+}
+
+.menu-content span::before {
+content: "•";
+color: #2196f3;
+margin-right: 5px;
+}
+
+.menu-table .calorie {
+width: 100px;
+text-align: center !important;
+color: #666;
+font-size: 0.9em;
+}
+
+.menu-icon {
+font-size: 1.2em;
+margin-right: 5px;
+vertical-align: middle;
+}
+
+/* 반응형 테이블 */
+@media (max-width: 768px) {
+.menu-table {
+font-size: 14px;
+}
+
+.menu-type {
+width: 60px;
+}
+
+.menu-date {
+width: 80px;
+}
+
+.menu-content span {
+margin: 2px 4px;
+}
+
+.menu-table th, 
+.menu-table td {
+padding: 8px 10px;
+}
+
+.calorie {
+display: none; /* 모바일에서는 칼로리 정보 숨김 */
+}
+}
+
+/* 작은 화면에서의 스크롤 처리 */
+@media (max-width: 480px) {
+.menu-items {
+padding: 10px;
+overflow-x: auto;
+}
+
+.menu-table {
+min-width: 400px; /* 테이블 최소 너비 설정 */
+}
+
+.menu-content {
+padding: 10px !important;
+}
+}
+
+/* 테이블 애니메이션 효과 */
+.menu-table tr {
+transition: all 0.3s ease;
+}
+
+.menu-table td {
+transition: background-color 0.3s ease;
+}
+
+/* 영양소 정보 스타일 (옵션) */
+.nutrition-info {
+font-size: 0.85em;
+color: #666;
+text-align: right;
+margin-top: 5px;
+}
+
+.footer {
+text-align: center;
+margin-top: 30px;
+padding-top: 20px;
+border-top: 2px solid #bbdefb;
+color: #1565c0;
+}
+
+.icon {
+font-size: 24px;
+margin: 0 5px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+.container {
+padding: 15px;
+margin: 10px;
+}
+
+h1 {
+font-size: 22px;
+}
+
+button {
+margin-top: 10px;
+width: 100%;
+margin-left: 0;
+}
+
+input[type="date"] {
+width: 100%;
+}
+
+.menu-table {
+font-size: 14px;
+margin: 5px 0;
+}
+
+.menu-table th, 
+.menu-table td {
+padding: 12px 10px;
+}
+
+.menu-type {
+width: 60px;
+}
+
+.menu-date {
+width: 80px;
+}
+
+.menu-content span {
+margin: 2px 4px;
+}
+
+.calorie {
+display: none; /* 모바일에서는 칼로리 정보 숨김 */
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>조선대학교부속고등학교</h1>
+<h1>🍴급식 메뉴🍚</h1>
+
+<!-- 날짜 선택 필드 -->
+<div class="date-selector">
+<input type="date" id="datePicker">
+</div>
+
+<!-- 로딩 인디케이터 -->
+<div id="loadingIndicator" class="loading" style="display: none;">로딩 중... ⏳</div>
+
+<!-- 점심 메뉴 -->
+<div class="menu">
+<h2>🔅점심 메뉴</h2>
+<ul class="menu-items" id="lunchMenu"></ul>
+</div>
+
+<!-- 석식 메뉴 -->
+<div class="menu">
+<h2>🌛석식 메뉴</h2>
+<ul class="menu-items" id="dinnerMenu"></ul>
+</div>
+
+<!-- 방문자 카운터 (FreeCounter API) -->
+<div class="visitor-counter">
+            👩‍🎓 누적 방문자 수: 
+            <div id="sfc4xwy8yqsl6jxulm4l3hup213n75qbquj"></div>
+            <script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=4xwy8yqsl6jxulm4l3hup213n75qbquj&down=async" async></script>
+            <noscript><a href="https://www.freecounterstat.com" title="free web counters"><img src="https://counter6.optistats.ovh/private/freecounterstat.php?c=4xwy8yqsl6jxulm4l3hup213n75qbquj" border="0" title="free web counters" alt="free web counters"></a></noscript>
+
+</div>
+
+<!-- 주의 문구 -->
+<div class="notice">
+식단에 관한 자세한 정보는 <a href="http://chosun.gen.hs.kr/xboard/board.php?tbnum=65" target="_blank">학교홈피</a>를 참고하세요.
+</div>
+</div>
+
+<script>
+const lunchMenu = document.getElementById('lunchMenu');
+const dinnerMenu = document.getElementById('dinnerMenu');
+const datePicker = document.getElementById('datePicker');
+const loadingIndicator = document.getElementById('loadingIndicator');
+
+const API_KEY = '8a39f4569d8541efab7890e86cae2bf4';
+const ATPT_OFCDC_SC_CODE = 'F10';
+const SD_SCHUL_CODE = '7380076';
+
+async function fetchMenuData(date) {
+const formattedDate = date.replace(/-/g, '');
+const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${API_KEY}&Type=json&ATPT_OFCDC_SC_CODE=${ATPT_OFCDC_SC_CODE}&SD_SCHUL_CODE=${SD_SCHUL_CODE}&MLSV_YMD=${formattedDate}`;
+
+try {
+const response = await fetch(url);
+const data = await response.json();
+
+if (data.mealServiceDietInfo) {
+return data.mealServiceDietInfo[1].row;
+} else {
+throw new Error('급식 정보가 없습니다.');
+}
+} catch (error) {
+console.error('Error fetching menu:', error);
+return [];
+}
+}
+
+function displayMenu(menuData) {
+lunchMenu.innerHTML = '';
+dinnerMenu.innerHTML = '';
+
+if (menuData.length === 0) {
+lunchMenu.innerHTML = '<li>해당 날짜의 중식 메뉴가 없습니다.</li>';
+dinnerMenu.innerHTML = '<li>해당 날짜의 석식 메뉴가 없습니다.</li>';
+return;
+}
+
+menuData.forEach(meal => {
+const menuItems = meal.DDISH_NM.split('<br/>');
+const menuList = meal.MMEAL_SC_NM === '중식' ? lunchMenu : dinnerMenu;
+
+menuItems.forEach(item => {
+const li = document.createElement('li');
+li.textContent = item.replace(/\([^)]*\)/g, '').trim();
+menuList.appendChild(li);
+});
+});
+}
+
+async function updateMenu() {
+const selectedDate = datePicker.value;
+loadingIndicator.style.display = 'block';
+
+const menuData = await fetchMenuData(selectedDate);
+displayMenu(menuData);
+
+loadingIndicator.style.display = 'none';
+}
+
+datePicker.valueAsDate = new Date();
+datePicker.addEventListener('change', updateMenu);
+
+updateMenu();
+</script>
+</body>
+</html>
